@@ -7,6 +7,6 @@ public interface BookRepository {
 
     void save(Book book);
 
-    Book findByTitle(String title);
+   // Book findByTitle(String title);
 
 }
