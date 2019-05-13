@@ -60,4 +60,38 @@ public class BookJdbcRepository implements BookRepository
 
     }
 
+    public void remove(Book book) throws SQLException, ClassNotFoundException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        try(
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@10.254.102.200:1522/DEV400", "MCADMIN", "Password1")
+        ) {
+            //DatabaseMetaData dbm = con.getMetaData();
+            // check if "employee" table is there
+            // ResultSet tables = dbm.getTables(null, null, "booksDB", null);
+            Statement stmt = con.createStatement();
+            if (bookExists(book, stmt)) {
+
+                //Statement stmt = con.createStatement();
+                stmt.execute("delete from booksdb where title = '" + book.title + "'");
+            }
+            else
+            {
+                System.out.println("Book was not in the database");
+            }
+        }
+    }
+
+
+    private boolean bookExists(Book book, Statement stmt)
+    {
+        try{
+            stmt.executeQuery("select * from booksdb where title = '" + book.title + "'");
+            return true;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
 }

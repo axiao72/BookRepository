@@ -41,4 +41,9 @@ public class BookFSRepository implements BookRepository {
         Files.write(Paths.get(file.getAbsolutePath()), entry.getBytes(), StandardOpenOption.APPEND);
     }
 
+    public void remove(Book book)
+    {
+
+    }
+
 }

@@ -13,8 +13,11 @@ public class BookJdbcRepositoryTest {
 
 
     @Test
-    public void testSave() {
-        repository.save(new Book("Harry Potter", "J.K. Rowling", 600));
+    public void testSave() throws SQLException, ClassNotFoundException {
+        Book book = new Book("Hunger Games", "Suzanne Collins", 384);
+        repository.remove(book);
+
+
     }
 
 
