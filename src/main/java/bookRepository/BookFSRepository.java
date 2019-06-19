@@ -46,4 +46,9 @@ public class BookFSRepository implements BookRepository {
 
     }
 
+    public Book findByTitle(String title)
+    {
+        return null;
+    }
+
 }

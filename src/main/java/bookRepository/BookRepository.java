@@ -9,8 +9,8 @@ public interface BookRepository {
 
     void save(Book book);
 
-    void remove(Book book) throws SQLException, ClassNotFoundException;
+    //void remove(Book book) throws SQLException, ClassNotFoundException;
 
-   // Book findByTitle(String title);
+    Book findByTitle(String title) throws ClassNotFoundException, SQLException;
 
 }

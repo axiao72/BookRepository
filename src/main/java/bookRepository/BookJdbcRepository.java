@@ -85,12 +85,56 @@ public class BookJdbcRepository implements BookRepository
     private boolean bookExists(Book book, Statement stmt)
     {
         try{
-            stmt.executeQuery("select * from booksdb where title = '" + book.title + "'");
-            return true;
+            ResultSet rs = stmt.executeQuery("select sum(pages) from booksdb where title = '" + book.title + "'");
+            if(rs.getInt(1) > 0) {
+                return true;
+            }
+            else
+                return false;
         }
         catch(Exception e)
         {
             return false;
+        }
+    }
+
+    private boolean bookExists(String title, Statement stmt)
+    {
+        try{
+            ResultSet rs = stmt.executeQuery("select sum(pages) from booksdb where title = '" + title + "'");
+            if(rs.getInt(1) > 0) {
+                return true;
+            }
+            else
+                return false;
+        }
+        catch(Exception e)
+        {
+            return false;
+        }
+    }
+
+    public Book findByTitle(String title) throws ClassNotFoundException, SQLException {
+        Class.forName("oracle.jdbc.driver.OracleDriver");
+        try(
+                Connection con = DriverManager.getConnection("jdbc:oracle:thin:@10.254.102.200:1522/DEV400", "MCADMIN", "Password1")
+        ) {
+            //DatabaseMetaData dbm = con.getMetaData();
+            // check if "employee" table is there
+            // ResultSet tables = dbm.getTables(null, null, "booksDB", null);
+            Statement stmt = con.createStatement();
+            if (bookExists(title, stmt)) {
+
+                //Statement stmt = con.createStatement();
+                ResultSet rs = stmt.executeQuery("select * from booksdb where title = '" + title + "'");
+                Book foundBook = new Book(rs.getString("title"), rs.getString("author"), rs.getInt("pages"));
+                return foundBook;
+            }
+            else
+            {
+                System.out.println("Book was not in the database");
+                return null;
+            }
         }
     }
 
